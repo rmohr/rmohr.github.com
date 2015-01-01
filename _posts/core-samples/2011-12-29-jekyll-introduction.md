@@ -1,7 +1,7 @@
 ---
 layout: post
 category : lessons
-image : docker.png
+image : /img/posts/docker.png
 tagline: "Supporting tagline"
 tags : [intro, beginner, jekyll, tutorial]
 summary : The Summary

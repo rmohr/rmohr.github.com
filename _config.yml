@@ -8,8 +8,9 @@ highlighter: pygments
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Testblog
+title : localhost8080
 tagline: My Tagline
+logo : http://www.gravatar.com/avatar/f03528dd836bb2676107f1d614ea69f0?s=80
 author :
   name : Roman Mohr
   email : roman@fenkhuber.at
