@@ -93,7 +93,7 @@ Store this Ansible playbook in `vdsm-prometheus.yml`:
 ---
 - hosts: vdsm
    roles:
-       - { role: rmohr.vdsm-prometheus, opts: "-no-verify -no-prom-auth" }
+       - { role: rmohr.vdsm-prometheus, opts: "-no-verify -no-prom-auth -vm-scrape-interval=10" }
 {% endhighlight %}
 
 Executing the playbook:
