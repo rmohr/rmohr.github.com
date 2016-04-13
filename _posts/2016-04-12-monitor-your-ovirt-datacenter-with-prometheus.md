@@ -47,6 +47,7 @@ Let's run Prometheus and Grafana with automatic oVirt host discovery in docker:
 git clone git@github.com:rmohr/ovirt-prometheus-bridge.git
 cd ovirt-prometheus-bridge
 export ENGINE_PASSWORD=engine
+# oVIrt Engine IP (In my case the engine and my containers are running on the same host):
 export HOSTIP=`ip -4 addr show scope global dev docker0 | grep inet | awk '{print \$2}' | cut -d / -f 1`
 docker-compose up
 {% endhighlight %}
