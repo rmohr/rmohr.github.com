@@ -59,7 +59,7 @@ Add a Prometheus datasource to Grafana:
 curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" --data '{ "name":"oVirt", "type":"prometheus", "url":"http://prometheus:9090", "access":"proxy", "basicAuth":false }' http://admin:admin@localhost:3000/api/datasources
 {% endhighlight %}
 
-When visiting [http://localhost:9090/status](http://localhost:9090/status) you should see that Prometheus found all the hosts:
+When visiting [http://localhost:9090/status](http://localhost:9090/status) you should see that Prometheus picked up the hosts:
 <img src="{{ site.url }}/img/posts/prometheus-hosts-discovered.png" class="img-responsive" alt="Prometheus discovered all oVirt hosts"> 
 
 There are no metrics for Prometheus to collect for now. Let's change that
@@ -97,22 +97,22 @@ Store this Ansible playbook in `vdsm-prometheus.yml`:
        - { role: rmohr.vdsm-prometheus, opts: "-no-verify -no-prom-auth -vm-scrape-interval=10" }
 {% endhighlight %}
 
-Executing the playbook:
+Execute the playbook:
 {% highlight bash %}
 ansible-playbook -i hosts -u root --private-key $ENGINE_HOME/etc/pki/ovirt-engine/keys/engine_id_rsa vdsm-prometheus.yml
 {% endhighlight %}
 
 When visiting [http://localhost:9090/status](http://localhost:9090/status)
-again you should see that state of the Prometheus targets is now UP:
+again you should see that the state of the Prometheus targets is now UP:
 <img src="{{ site.url }}/img/posts/vdsm-prometheus-hosts-up.png" class="img-responsive" alt="Prometheus discovered all oVirt hosts"> 
 
 ### Querying Prometheus with Grafana
 Finally you can visit [http://localhost:3000](http://localhost:3000) and log
-into Grafana with the default credential `admin:admin`. Here you can see a
+into Grafana with the default credentials `admin:admin`. Here you can see a
 very simple case where I am monitoring the CPU usage of VDSM itself:
 
 <img src="{{ site.url }}/img/posts/vdsm-prometheus-grafana.png" class="img-responsive" alt="Prometheus discovered all oVirt hosts"> 
 
-Here is another case where we are displaying the sum of the CPU usages of all VMs per host with the function `sum(vm_cpu_user) per (host)`:
+Here is another case where we are displaying the sum of the CPU usage of all VMs per host with the function `sum(vm_cpu_user) by (host)`:
 
 <img src="{{ site.url }}/img/posts/vm-cpu-usage-per-host.png" class="img-responsive" alt="Sum of CPU usage of all VMs per host"> 
