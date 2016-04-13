@@ -42,7 +42,7 @@ Here you can see an overview of all involved components:
 <img src="{{ site.url }}/img/posts/ovirt-host-monitoring-architecture.png" style="max-width: 50%;height: auto;display:block" alt="Architecture"> 
 
 ### Prepare Prometheus, Grafana and ovirt-prometheus-bridge
-Let's run Prometheus, Grafana with automatic oVirt host discovery in docker:
+Let's run Prometheus and Grafana with automatic oVirt host discovery in docker:
 {% highlight bash %}
 git clone git@github.com:rmohr/ovirt-prometheus-bridge.git
 cd ovirt-prometheus-bridge
@@ -60,7 +60,7 @@ curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -
 When visiting [http://localhost:9090/status](http://localhost:9090/status) you should see that Prometheus found all the hosts:
 <img src="{{ site.url }}/img/posts/prometheus-hosts-discovered.png" class="img-responsive" alt="Prometheus discovered all oVirt hosts"> 
 
-There are no metrics for Prometheus to collect there for now. Let's change that
+There are no metrics for Prometheus to collect for now. Let's change that
 by installing `vdsm-prometheus` on the hosts.
 
 ### Install vdsm-prometheus on all hosts
