@@ -6,6 +6,7 @@ category: "Virtualization"
 tags: ["oVirt","VDSM","Prometheus","Grafana", "Ansible", "vdsm-prometheus"]
 summary: "How to monitor your oVirt datacenter with Prometheus and Grafana."
 image: "/img/posts/ovirt.png"
+hashtags: "ovirt, prometheus, ansible, grafana"
 ---
 {% include JB/setup %}
 
