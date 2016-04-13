@@ -13,9 +13,10 @@ image: "/img/posts/ovirt.png"
 your virtual datacenter. Combining it with [Prometheus](https://prometheus.io/)
 and [Grafana](http://grafana.org/) gives us access to real time metrics and
 time series combined with a powerful query language and customized dashboards.
-The advantages are obvious. Finding hosts which are underutilized, finding VMs
+The advantages are obvious: Finding hosts which are underutilized, finding VMs
 which are not behaving or even comparing resource usage profiles of whole
-cluster over days become easy tasks.
+cluster over days become easy tasks. Further we can use the Prometheus
+[Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) for alerting.
 
 In the following lines we will setup all required services to monitor your
 virtual datacenter with Prometheus and Grafana. Note that all services can be
