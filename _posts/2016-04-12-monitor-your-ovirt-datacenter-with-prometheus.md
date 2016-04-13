@@ -108,4 +108,9 @@ again you should see that state of the Prometheus targets is now UP:
 Finally you can visit [http://localhost:3000](http://localhost:3000) and log
 into Grafana with the default credential `admin:admin`. Here you can see a
 very simple case where I am monitoring the CPU usage of VDSM itself:
+
 <img src="{{ site.url }}/img/posts/vdsm-prometheus-grafana.png" class="img-responsive" alt="Prometheus discovered all oVirt hosts"> 
+
+Here is another case where we are displaying the sum of the CPU usages of all VMs per host with the function `sum(vm_cpu_user) per (host)`:
+
+<img src="{{ site.url }}/img/posts/vm-cpu-usage-per-host.png" class="img-responsive" alt="Sum of CPU usage of all VMs per host"> 
