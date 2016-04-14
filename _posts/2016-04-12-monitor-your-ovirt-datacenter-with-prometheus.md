@@ -48,7 +48,7 @@ Here you can see an overview of all involved components:
 ### Prepare Prometheus, Grafana and ovirt-prometheus-bridge
 Let's run Prometheus and Grafana with automatic oVirt host discovery in docker:
 {% highlight bash %}
-git clone git@github.com:rmohr/ovirt-prometheus-bridge.git
+git clone https://github.com/rmohr/ovirt-prometheus-bridge.git
 cd ovirt-prometheus-bridge
 export ENGINE_PASSWORD=engine
 # oVIrt Engine IP (In my case the engine and my containers are running on the same host):
@@ -59,7 +59,7 @@ docker-compose up
 Add a Prometheus datasource to Grafana:
 
 {% highlight bash %}
-curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" --data '{ "name":"oVirt", "type":"prometheus", "url":"http://prometheus:9090", "access":"proxy", "basicAuth":false }' http://admin:admin@localhost:3000/api/datasources
+curl -X POST -H "Accept:application/json" -H "Content-Type:application/json" --data '{ "name":"oVirt", "type":"prometheus", "url":"http://prometheus:9090", "access":"proxy", "basicAuth":false }' http://admin:admin@localhost:3000/api/datasources
 {% endhighlight %}
 
 When visiting [http://localhost:9090/status](http://localhost:9090/status) you should see that Prometheus picked up the hosts:
@@ -76,7 +76,7 @@ First create an Ansible inventory by querying oVirt Engine for all existing host
 export ENGINE_HOST=http://localhost:8080
 export ENGINE_PASSWORD=engine
 echo "[vdsm]" > hosts && \
-    curl -H "Accept: application/json" -H "Content-type: application/json" -X GET --user admin@internal:$ENGINE_PASSWORD $ENGINE_HOST/ovirt-engine/api/hosts \
+    curl -H "Accept:application/json" -H "Content-type:application/json" -X GET --user admin@internal:$ENGINE_PASSWORD $ENGINE_HOST/ovirt-engine/api/hosts \
     | jq '.host[].address' -r >> hosts
 {% endhighlight %}
 
