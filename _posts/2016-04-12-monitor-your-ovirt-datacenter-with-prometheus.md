@@ -41,7 +41,9 @@ the Ansible role
 [rmohr.vdsm-prometheus](https://galaxy.ansible.com/rmohr/vdsm-prometheus/).
 
 Here you can see an overview of all involved components:
-<img src="{{ site.url }}/img/posts/ovirt-host-monitoring-architecture.png" style="max-width: 50%;height: auto;display:block" alt="Architecture"> 
+<div>
+<img src="{{ site.url }}/img/posts/ovirt-host-monitoring-architecture.png" style="max-width: 50%;height: auto;display:block min-width:25em" alt="Architecture"> 
+</div>
 
 ### Prepare Prometheus, Grafana and ovirt-prometheus-bridge
 Let's run Prometheus and Grafana with automatic oVirt host discovery in docker:
@@ -94,8 +96,8 @@ Store this Ansible playbook in `vdsm-prometheus.yml`:
 {% highlight yaml %}
 ---
 - hosts: vdsm
-   roles:
-       - { role: rmohr.vdsm-prometheus, opts: "-no-verify -no-prom-auth -vm-scrape-interval=10" }
+  roles:
+    - { role: rmohr.vdsm-prometheus, opts: "-no-verify -no-prom-auth -vm-scrape-interval=10" }
 {% endhighlight %}
 
 Execute the playbook:
