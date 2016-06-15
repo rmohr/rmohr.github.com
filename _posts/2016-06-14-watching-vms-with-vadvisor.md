@@ -4,7 +4,7 @@ title: "Watching migrating VMs with vAdvisor"
 description: ""
 category:
 summary: "Keep an eye on your VMs with vAdvisor"
-tags: ["vAdvisor", "Prometheus", "StatsD", "oVirt", "libvirt"]
+tags: ["vAdvisor", "Prometheus", "StatsD", "oVirt", "libvirt", "Hawkular"]
 image: "/img/posts/cctv.png"
 ---
 {% include JB/setup %}
@@ -181,3 +181,16 @@ curl --silent 'http://localhost:9090/api/v1/query?query=vm_up>0' | jq ""
   }
 }
 {% endhighlight %}
+
+### Integrating with Hawkular
+
+If [Hawkular](http://www.hawkular.org/) is your chosen metrics collector,
+[ptrans](https://github.com/hawkular/hawkular-metrics/tree/master/clients/ptranslator)
+from Hawkular can be used as StatsD proxy server. Just tell vAdvisor with the
+`--statsd-host` parameter where ptrans is located. vAdvisor will then
+periodically push all metrics to Hawkular.
+
+Stay tuned for more about integrating
+[vAdvisor](https://github.com/kubevirt/vAdvisor) with
+[Hawkular](http://www.hawkular.org/) and
+[cAdvisor](https://github.com/google/cadvisor) in my next post.
