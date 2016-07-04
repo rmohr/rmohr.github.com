@@ -10,11 +10,11 @@ image: "/img/posts/integration.jpg"
 ---
 {% include JB/setup %}
 
- [oVirts](http://ovirt.org) heart `ovirt-engine` is a huge monolith with more
- than one million lines of codes base on Wildfly. One of the problems faced
+ [oVirt's](http://ovirt.org) heart `ovirt-engine` is a monolith with more
+ than one million lines of codes based on Wildfly. One of the problems faced
  when working on such big projects is that sometimes writing tests is extremely
- complex. You spend a tremendous amount of time mocking database access and not
- relevant services for the unit under test.
+ complex. You spend a tremendous amount of time mocking database access and
+ irrelevant services for the unit under test.
 
 One way to deal with that complexity is to treat the
 database as part of the application. While we will see the advantages of this
