@@ -38,7 +38,107 @@ Since `ovirt-engine` is based on [Wildfly](http://wildfly.org/),
 [Arquillian](http://arquillian.org/) is the perfect choice for meeting these
 requirements.
 
-### Writing an application scoped test step-by-step
+Getting started with Arquillian is pretty easy. Add the right dependencies to your Maven `pom.xml`:
+
+{% highlight xml %}
+  <dependencies>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec</groupId>
+      <artifactId>jboss-javaee-6.0</artifactId>
+      <type>pom</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-depchain</artifactId>
+      <scope>test</scope>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.container</groupId>
+      <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+      <version>1.0.0.CR8</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-core</artifactId>
+      <version>1.1.5.Final</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.6.4</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+{% endhighlight %}
+
+Create a simple Arquillian test:
+
+{% highlight java %}
+@RunWith(Arquillian.class)
+public class SimpleTest {
+
+    @Inject
+    TestBean testBean;
+
+    @Deployment
+    public static JavaArchive deploy() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClass(
+                        TestBean.class
+                ).addAsManifestResource(
+                        EmptyAsset.INSTANCE,
+                        ArchivePaths.create("beans.xml")
+                );
+    }
+
+    @Test
+    public void shouldPrintHello() {
+        testBean.printHello();
+    }
+
+    public static class TestBean {
+        public void printHello() {
+            System.out.println("Hi I am injected");
+        }
+    }
+}
+{% endhighlight %}
+and your first test with real injections is running. A good
+starting point for understanding Arquillian better is the [Getting
+Started](http://arquillian.org/guides/getting_started/) article on the
+Arquillian homepage.
+
+Arquillian can also do automatic rollback for you with its [Transaction
+Extension](http://arquillian.org/modules/transaction-extension/).  Since this
+requires the download of a full JavaEE Application Server it is not an option
+for oVirt right now. To still get automatic rollback I only had to create a
+custom Arquillian Extension which can be found
+[here](https://github.com/oVirt/ovirt-engine/tree/aa000f27c7bcb17cf82fbd2579059664838cfea7/backend/manager/modules/bll/src/test/java/org/ovirt/engine/arquillian/database).
+Look at
+[RollbackRule.java](https://github.com/oVirt/ovirt-engine/blob/aa000f27c7bcb17cf82fbd2579059664838cfea7/backend/manager/modules/bll/src/test/java/org/ovirt/engine/arquillian/database/RollbackRule.java)
+in the extension to see how the Spring transaction manager is hooked into
+Arquillian without the need of a real JTA transaction manager. Almost everyting
+in Arquillian is extensible, that is really where this project shines. 
+
+All this is already part of oVirt, so when writing tests, you don't have to
+care about this anymore. Inherit from the right base class and start
+writing your test. 
+
+### Writing an oVirt application scoped test step-by-step
 
 Creating an application scoped test for oVirt is pretty simple:
 {% highlight java %}
