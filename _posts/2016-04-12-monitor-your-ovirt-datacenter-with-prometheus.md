@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Monitor your oVirt datacenter with Prometheus"
+title: "Monitor your oVirt-Datacenter with Prometheus"
 description: ""
 category: "Virtualization"
 tags: ["oVirt","VDSM","Prometheus","Grafana", "Ansible", "vdsm-prometheus"]
-summary: "How to monitor your oVirt datacenter with Prometheus and Grafana."
+summary: "How to monitor your oVirt-Datacenter with Prometheus and Grafana."
 image: "/img/posts/ovirt.png"
 hashtags: "ovirt, prometheus, ansible, grafana"
 ---

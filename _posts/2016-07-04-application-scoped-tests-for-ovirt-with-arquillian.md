@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Application scoped tests for oVirt with Arquillian"
+title: "Application-Scoped Tests for oVirt with Arquillian"
 description: ""
 category: "Continuous Integration"
 tags: ["oVirt","Arquillian", "Builder", "Postgres", "Unit Test", "Wildfly"]
@@ -10,8 +10,8 @@ image: "/img/posts/integration.jpg"
 ---
 {% include JB/setup %}
 
- [oVirt's](http://ovirt.org) heart `ovirt-engine` is a monolith with more
- than one million lines of codes based on Wildfly. One of the problems faced
+ [oVirt's](http://ovirt.org) heart, `ovirt-engine`, is a monolith with more
+ than one million lines of code based on Wildfly. One of the problems faced
  when working on such big projects is that sometimes writing tests is extremely
  complex. You spend a tremendous amount of time mocking database access and
  irrelevant services for the unit under test.
@@ -27,11 +27,11 @@ many more. This has changed over time. Nowadays the integration mostly happens
 through REST or similar APIs, giving applications the freedom to choose the one
 (or even more than one) database technology suiting their domain.
 
-Back to the topic of this post: To integrate the database into the tests, some
+Back to the topic of this post; to integrate the database into the tests, some
 requirements need to be met:
 
  * Database rollback after every test
- * An easy way to create, update and delete test relevant data on the database layer must be provided
+ * An easy way to create, update, and delete test relevant data on the database layer must be provided
  * The main application infrastructure should be up and things like CDI injections should work.
 
 Since `ovirt-engine` is based on [Wildfly](http://wildfly.org/),
@@ -125,20 +125,20 @@ Arquillian homepage.
 Arquillian can also do automatic rollback for you with its [Transaction
 Extension](http://arquillian.org/modules/transaction-extension/).  Since this
 requires the download of a full JavaEE Application Server it is not an option
-for oVirt right now. To still get automatic rollback I only had to create a
-custom Arquillian Extension which can be found
+for oVirt right now. To still get automatic rollback, I only had to create a
+custom Arquillian Extension, which can be found
 [here](https://github.com/oVirt/ovirt-engine/tree/aa000f27c7bcb17cf82fbd2579059664838cfea7/backend/manager/modules/bll/src/test/java/org/ovirt/engine/arquillian/database).
 Look at
 [RollbackRule.java](https://github.com/oVirt/ovirt-engine/blob/aa000f27c7bcb17cf82fbd2579059664838cfea7/backend/manager/modules/bll/src/test/java/org/ovirt/engine/arquillian/database/RollbackRule.java)
 in the extension to see how the Spring transaction manager is hooked into
 Arquillian without the need of a real JTA transaction manager. Almost everyting
-in Arquillian is extensible, that is really where this project shines. 
+in Arquillian is extensible, that is really where this project shines.
 
-All this is already part of oVirt, so when writing tests, you don't have to
+All of this is already part of oVirt, so when writing tests, you don't have to
 care about this anymore. Inherit from the right base class and start
 writing your test. 
 
-### Writing an oVirt application scoped test step-by-step
+### Writing an oVirt Application-Scoped Test Step by Step
 
 Creating an application scoped test for oVirt is pretty simple:
 {% highlight java %}
@@ -157,11 +157,11 @@ first integration test with the standard Maven life-cycle. Regular unit tests
 can still run in the normal test phase and are independent from any resource
 needs of the integration tests.
 
-Arquillian based tests need a static method with the `@Deployment` annotation
+Arquillian-based tests need a static method with the `@Deployment` annotation
 on it. There we return a `JavaArchive`. Arquillian supports different
 application types (EAR, WAR, JAR). For our scenario the advantage of the
 `JavaArchive` is that in contrast to WAR and EAR deployments everything on the
-classpath will also be accessable in the tests, whereas the other application
+classpath will also be accessible in the tests, whereas the other application
 types are far better isolated. However, to make classes injectable they need to
 be part of the generated JAR itself. The `JavaArchive` follows a nice builder
 pattern and adding your own services is just a matter of calling
@@ -172,7 +172,7 @@ All DAOs and the basic `ovirt-engine` services are already added to the archive 
 
 That is not the only thing the base class does for us. It does:
 
- * Transaction handling. After every test the database is rolled back
+ * Transaction handling. After every test, the database is rolled back
  * Creating a default datacenter with a default host and a default VM in the database.
  * Loading the default config values of ovirt-engine
  * Loading the default OS configuration for different OS types
@@ -180,6 +180,7 @@ That is not the only thing the base class does for us. It does:
  * Packing all DAOs and the most common services in the Arquillian JAR.
 
 The next step is to set up your test:
+
 {% highlight java %}
     @Inject
     BackendInternal backend;
@@ -196,8 +197,9 @@ The next step is to set up your test:
         vmBuilder.reset().cluster(defaultCluster).os(OS_RHEL7_X86_64).name("my_vm");
     }
 {% endhighlight %}
+
 Arquillian gives us the possibility to use injections in the test class itself.
-Here the `StoragePoolDao` is injected. Further in the `@Before` method a
+Here, the `StoragePoolDao` is injected. Further in the `@Before` method a
 default scenario for the tests is defined. In this case testing the
 `AddVmCommand` is the goal. Therefore a VM which will make the `AddVmCommand`
 operation pass is defined (not created yet) with the `VmBuilder` (The builders
@@ -252,7 +254,7 @@ is loaded, set to `NotOperational` and persisted again. As a result the
 }
 {% endhighlight %}
 
-### Populating the database
+### Populating the Database
 
 While Arquillian and some custom extensions are preparing the environment to
 reduce the amount of repetitive set-up code for the tests, this does still not
@@ -314,4 +316,5 @@ There are two very important rules when writing builders for new entities:
 The final step to make the usage of the builders and the default environment even more convenient, is to declare them in the base class as protected fields. This allows inherited test cases to easily access the pre-persisted default entities and the builders, like demonstrated on the `AddVmCommandTest` example above.
 
 ### Conclusion
-Comparing the classic [AddVmCommandTest](https://gerrit.ovirt.org/gitweb?p=ovirt-engine.git;a=blob;f=backend/manager/modules/bll/src/test/java/org/ovirt/engine/core/bll/AddVmCommandTest.java;h=5cacad4b8058ac10aa45f7e0cfd00c4f38fbbd88;hb=80274308dcadddea46cde895f7418b022cb6224e) with the new [integration/AddVmCommandTest](https://gerrit.ovirt.org/gitweb?p=ovirt-engine.git;a=blob;f=backend/manager/modules/bll/src/test/java/org/ovirt/engine/core/bll/integration/AddVmCommandTest.java;h=a7da66974beaf3694d26aa0f3507c5b146d67c59;hb=80274308dcadddea46cde895f7418b022cb6224e) immediately shows how much simpler it is to quickly write new tests. Further we can stop imitating application internal DAO and service logic with Mockito, making it easier to refactor the application and the tests. Since we are also not mocking any of the DAOs or core services there is a higher chance of immediately detecting changes of behaviour (intendet or unintended) which would break dependent services.
+
+Comparing the classic [AddVmCommandTest](https://gerrit.ovirt.org/gitweb?p=ovirt-engine.git;a=blob;f=backend/manager/modules/bll/src/test/java/org/ovirt/engine/core/bll/AddVmCommandTest.java;h=5cacad4b8058ac10aa45f7e0cfd00c4f38fbbd88;hb=80274308dcadddea46cde895f7418b022cb6224e) with the new [integration/AddVmCommandTest](https://gerrit.ovirt.org/gitweb?p=ovirt-engine.git;a=blob;f=backend/manager/modules/bll/src/test/java/org/ovirt/engine/core/bll/integration/AddVmCommandTest.java;h=a7da66974beaf3694d26aa0f3507c5b146d67c59;hb=80274308dcadddea46cde895f7418b022cb6224e) immediately shows how much simpler it is to quickly write new tests. Further we can stop imitating application internal DAO and service logic with Mockito, making it easier to refactor the application and the tests. Since we are also not mocking any of the DAOs or core services there is a higher chance of immediately detecting changes of behaviour (intended or unintended) which would break dependent services.

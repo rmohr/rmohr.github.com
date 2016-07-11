@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Watching migrating VMs with vAdvisor"
+title: "Watching Migrating VMs with vAdvisor"
 description: ""
 category:
 summary: "Keep an eye on your VMs with vAdvisor"
