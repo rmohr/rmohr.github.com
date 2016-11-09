@@ -315,6 +315,12 @@ There are two very important rules when writing builders for new entities:
 
 The final step to make the usage of the builders and the default environment even more convenient, is to declare them in the base class as protected fields. This allows inherited test cases to easily access the pre-persisted default entities and the builders, like demonstrated on the `AddVmCommandTest` example above.
 
+### Finally run the tests
+
+{% highlight bash %}
+mvn clean verify -DskipITs=false
+{% endhighlight %}
+
 ### Conclusion
 
 Comparing the classic [AddVmCommandTest](https://gerrit.ovirt.org/gitweb?p=ovirt-engine.git;a=blob;f=backend/manager/modules/bll/src/test/java/org/ovirt/engine/core/bll/AddVmCommandTest.java;h=5cacad4b8058ac10aa45f7e0cfd00c4f38fbbd88;hb=80274308dcadddea46cde895f7418b022cb6224e) with the new [integration/AddVmCommandTest](https://gerrit.ovirt.org/gitweb?p=ovirt-engine.git;a=blob;f=backend/manager/modules/bll/src/test/java/org/ovirt/engine/core/bll/integration/AddVmCommandTest.java;h=a7da66974beaf3694d26aa0f3507c5b146d67c59;hb=80274308dcadddea46cde895f7418b022cb6224e) immediately shows how much simpler it is to quickly write new tests. Further we can stop imitating application internal DAO and service logic with Mockito, making it easier to refactor the application and the tests. Since we are also not mocking any of the DAOs or core services there is a higher chance of immediately detecting changes of behaviour (intended or unintended) which would break dependent services.
